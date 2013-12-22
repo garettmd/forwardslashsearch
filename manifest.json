@@ -1,22 +1,15 @@
 {
-    "name": "My awesome extension :)",
-    "version": "0.1",
+    "name": "/search",
+    "version": "2013.12.22",
     "icons": { 
-        "16": "/img/icons/icon_16.png",
-        "48": "/img/icons/icon_48.png",
         "128": "/img/icons/icon_128.png" 
     },
 
-    "description": "Yay, I'm so useless.",
-    "permissions": [
-        "geolocation"
-    ],
-
+    "description": "Press / to focus first search or input field on a page to perform a search.",
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
             "js": [
-                    "/js/external/jquery.js", 
                     "/js/content_script.js"
                 ]
         }
