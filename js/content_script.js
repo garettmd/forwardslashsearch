@@ -3,8 +3,7 @@
 	//window parameter, because we might want to workaround some iframe magic sometime
 	function getInput(window) {
 		var searchField = window.document.querySelector('input[type="search"]');
-		var textField = window.document.querySelector('input[type="text"]');
-
+		var textField = window.document.querySelector('input[type="text"], input:not([type])');
 		return searchField || textField	
 	}
 
