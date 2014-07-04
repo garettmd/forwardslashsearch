@@ -1,28 +1,59 @@
-(function(window) {
+(function (window) {
 
-	//window parameter, because we might want to workaround some iframe magic sometime
-	function getInput(window) {
-		var searchField = window.document.querySelector('input[type="search"]');
-		var textField = window.document.querySelector('input[type="text"], input:not([type])');
-		return searchField || textField	
-	}
+  /**
+   * @param {Node} element
+   * @returns {boolean}
+   */
+  function isElementVisible(element) {
+    return element.offsetHeight > 0 && element.offsetWidth > 0;
+  }
 
-	function isEditable(element) {
-		return element.tagName.toLowerCase() == 'input'
-			|| element.type == 'textarea'
-			|| element.isContentEditable
-	}
+  /**
+   *
+   * @param {Node} element
+   * @returns {boolean}
+   */
+  function isElementEditable(element) {
 
-	window.addEventListener('keyup', function(e) {
-		var input;
-		var KEY_CODE_FORWARD_SLASH = 191;
+    return element.tagName.toLowerCase() == 'input'
+    || element.type == 'textarea'
+    || element.isContentEditable
+  }
 
-		if (e.which === KEY_CODE_FORWARD_SLASH) {
+  /**
+   * @param {Window} window
+   * @returns {Node}|null
+   */
+  function getSearchInput(window) {
+    // retrieve inputs ordered by relevance (native search  inputs first)
+    var inputCandidates = window.document.querySelectorAll('input[type="search"], input[type="text"], input:not([type])');
 
-			input = getInput(window);
-			if(input && !isEditable(e.target)) {
-				input.focus();
-			}
-		}
-	});
+    // return first visible input
+    for (var i = 0; i < inputCandidates.length; i++) {
+      if (isElementVisible(inputCandidates[i])) {
+        return inputCandidates[i];
+      }
+    }
+
+    return null;
+  }
+
+  
+  window.addEventListener('keyup', function (e) {
+    var input;
+    var KEY_CODE_FORWARD_SLASH = 191;
+
+    // is the target element is editable, do nothing, because the user's probably already typing inside an input
+    // so no need to focus again
+    if (isElementEditable(e.target)) {
+      return;
+    }
+
+    if (e.which === KEY_CODE_FORWARD_SLASH) {
+      input = getSearchInput(window);
+      if (input) {
+        input.focus();
+      }
+    }
+  });
 })(window);
