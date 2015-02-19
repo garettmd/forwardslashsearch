@@ -38,10 +38,16 @@
     return null;
   }
 
-  
+
+  function wasSlashTyped(event) {
+    var KEY_CODE_FORWARD_SLASH = 191;
+    var KEY_CODE_SEVEN = 55;
+
+    return (event.which === KEY_CODE_FORWARD_SLASH) || (event.which === KEY_CODE_SEVEN && event.shiftKey);
+  }
+
   window.addEventListener('keyup', function (e) {
     var input;
-    var KEY_CODE_FORWARD_SLASH = 191;
 
     // is the target element is editable, do nothing, because the user's probably already typing inside an input
     // so no need to focus again
@@ -49,7 +55,7 @@
       return;
     }
 
-    if (e.which === KEY_CODE_FORWARD_SLASH) {
+    if (wasSlashTyped(e)) {
       input = getSearchInput(window);
       if (input) {
         input.focus();
