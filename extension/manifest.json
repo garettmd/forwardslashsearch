@@ -1,17 +1,18 @@
 {
     "name": "/search",
-    "version": "2014.0.2",
-    "icons": { 
-        "128": "/img/icons/icon_128.png" 
+    "version": "2015.0.1",
+    "icons": {
+        "128": "/img/icons/icon_128.png"
     },
 
     "description": "Press / (slash) to focus first search or input field on a page to perform a search.",
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            "run_at": "document_start",
             "js": [
                     "/js/content_script.js"
-                ]
+            ]
         }
     ],
 
