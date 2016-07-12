@@ -1,5 +1,9 @@
 (function (window) {
 
+
+  var keyPressed = false;
+
+
   /**
    * @param {Node} element
    * @returns {boolean}
@@ -16,8 +20,8 @@
   function isElementEditable(element) {
 
     return element.tagName.toLowerCase() == 'input'
-    || element.type == 'textarea'
-    || element.isContentEditable
+        || element.type == 'textarea'
+        || element.isContentEditable
   }
 
   /**
@@ -46,19 +50,22 @@
     return (event.which === KEY_CODE_FORWARD_SLASH) || (event.which === KEY_CODE_SEVEN && event.shiftKey);
   }
 
-  window.addEventListener('keyup', function (e) {
+  window.addEventListener('keydown', function (e) {
     var input;
 
     // is the target element is editable, do nothing, because the user's probably already typing inside an input
     // so no need to focus again
-    if (isElementEditable(e.target)) {
+    if (isElementEditable(e.target) && keyPressed) {
       return;
     }
+
+    keyPressed = true;
 
     if (wasSlashTyped(e)) {
       input = getSearchInput(window);
       if (input) {
         input.focus();
+        e.preventDefault();
       }
     }
   });
