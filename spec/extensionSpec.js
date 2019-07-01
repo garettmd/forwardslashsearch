@@ -1,6 +1,6 @@
 require("./setup.js");
-var By = require("selenium-webdriver").By;
-var until = require("selenium-webdriver").until;
+
+const { By, Key } = require("selenium-webdriver");
 
 var expect = require("chai").expect;
 
@@ -34,6 +34,29 @@ describe("extension", function() {
       .then(function(inputValue) {
         expect(inputValue).to.equal("Hello");
         done();
+      });
+  });
+
+  // shift / is often used to display help modal for shortcuts
+  it("does not focus input on / when shift key is pressed", function(done) {
+    var inputField;
+    var driver = this.driver();
+    driver.get("http://0.0.0.0:3531/simple_input.html");
+    driver
+      .findElement(By.css("body"))
+      .then(function(body) {
+        body.sendKeys(Key.chord(Key.SHIFT, "/"));
+      })
+      .then(function() {
+        return driver
+          .executeScript("return document.activeElement;")
+          .then(function(input) {
+            return input.getTagName();
+          })
+          .then(function(tagName) {
+            expect(tagName).to.equal("body");
+            done();
+          });
       });
   });
 
